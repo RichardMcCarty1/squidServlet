@@ -1,0 +1,14 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="squid_servlet:war">
+    <output-path>$PROJECT_DIR$/target</output-path>
+    <properties id="maven-jee-properties">
+      <options>
+        <module>squid_servlet</module>
+        <packaging>war</packaging>
+      </options>
+    </properties>
+    <root id="archive" name="squid_servlet-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="squid_servlet:war exploded" />
+    </root>
+  </artifact>
+</component>
