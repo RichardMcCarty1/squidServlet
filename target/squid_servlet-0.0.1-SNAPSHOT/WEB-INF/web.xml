@@ -16,8 +16,18 @@
     <servlet-name>FileUploadServlet</servlet-name>
     <servlet-class>com.cirdles.FileUploadServlet</servlet-class>
   </servlet>
+  <servlet>
+    <description></description>
+    <display-name>FileRetrieverServlet</display-name>
+    <servlet-name>FileRetrieverServlet</servlet-name>
+    <servlet-class>com.cirdles.FileRetrieverServlet</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>FileUploadServlet</servlet-name>
     <url-pattern>/</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileRetrieverServlet</servlet-name>
+    <url-pattern>/retrieve</url-pattern>
   </servlet-mapping>
 </web-app>

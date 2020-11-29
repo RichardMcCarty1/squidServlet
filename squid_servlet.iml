@@ -36,5 +36,7 @@
     <orderEntry type="library" name="material" level="application" />
     <orderEntry type="library" name="w3" level="application" />
     <orderEntry type="library" name="Maven: javax.servlet:javax.servlet-api:4.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.zeroturnaround:zt-zip:1.14" level="project" />
+    <orderEntry type="library" name="Maven: org.slf4j:slf4j-api:1.6.6" level="project" />
   </component>
 </module>
