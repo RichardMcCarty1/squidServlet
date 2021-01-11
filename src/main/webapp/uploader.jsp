@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Java Ajax Servlet File Upload</title>
+	<meta charset="UTF-8">
+	<title>Java Ajax Servlet File Upload</title>
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 	<link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.js"></script>
@@ -14,6 +14,7 @@
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<!-- Beacon API -->
 	<%--<script type="text/babel">
 		class Dashboard extends React.Component {
 			onLogoutClick = e => {
@@ -69,6 +70,9 @@
 		function hideDropdown(){
 			document.getElementById('dropdown-menu').style.display = "none";
 		}
+		async function hideDropdownAndDelete() {
+			document.getElementById('dropdown-menu').style.display = "none";
+		}
 
 		function showDropdown(){
 			let element = document.getElementById('dropdown-menu').style.display;
@@ -101,126 +105,158 @@
 
 						dataArr.forEach(renderProductList);
 						showDropdown();
+						function downloadURI(name)
+						{
+							var link = document.createElement("a");
+							// If you don't know the name or want to use
+							// the webserver default set name = ''
+							link.setAttribute('download', name);
+							link.href = "/usr/local/user_files/";
+							document.body.appendChild(link);
+							link.click();
+							link.remove();
+						}
+
 						function renderProductList(element, index, arr) {
 							if (element !== ""){
-
 								let li = document.createElement('li');
 								li.setAttribute('class', 'item');
-
+								let hold = element;
 								file_list.appendChild(li);
-
-								li.innerHTML = li.innerHTML + "<a href=\"#\">" + element + "<button class=\"btn btn-default btn-xs pull-right remove-item\"><span class=\"glyphicon glyphicon-remove\"/></button> </a>";
+								li.innerHTML = li.innerHTML + element + '<input type="button" value="Delete" onClick="del(\'' + element + '\')" />' + "<button " + "onclick=\"location.href='/squid_servlet/download/usr/local/userfiles/" + hold + "'\" type=\"button\">Download</button> </a>";
 							}
 						}
 
 					});
 			//alert('The file upload with Ajax and Java was a success!');
 		}
+		async function del(filename) {
+			console.log(filename)
+			const data = await fetch('delete/usr/local/user_files/' + filename, {
+				method: "POST",
+				body: null
+			}).then(function(response) {return response.text()}).then(function(data) {
+				hideDropdown();
+				console.log(data); // this will be a string
+			})
+	}
+		async function logout() {
+			const data = await fetch('filesenderservlet', {
+				method: "POST",
+				body: null
+			}).then(function(response) {return response.text();}).then(function(data) {
+				console.log(data); // this will be a string
+		})}
 	</script>
 </head>
 <body>
-	<div class="container" style="min-width: 100%; min-height: 100%">
-		<div style="z-index: 10" class="dropdown">
-			<button onclick="getFiles()" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File Manager
-				<span class="caret"></span></button>
-			<ul id="dropdown-menu" style="display: none;" class="dropdown-menu pre-scrollable">
-			</ul>
+<button
+		onclick="logout()" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Logout
+</button>
+</body>
+<body>
+<div class="container" style="min-width: 100%; min-height: 100%">
+	<div style="z-index: 10" class="dropdown">
+		<button onclick="getFiles()" class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">File Manager
+			<span class="caret"></span></button>
+		<ul id="dropdown-menu" style="display: none;" class="dropdown-menu pre-scrollable">
+		</ul>
+	</div>
+	<div class="fileUpload" style=" border: 2px solid teal; min-width: 80%; min-height: 80%; background-color: lightyellow; display: inline-block; margin: 0; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)">
+		<div class="prawnXML" style="display: inline-block; padding-left: 10%">
+			<h4>Zipped Prawn XML File:</h4>
+			<form method="post" action="fileuploadservlet" enctype="multipart/form-data">
+				<input type="file" name="file" />
+				<input type="submit" value="Upload" />
+			</form>
 		</div>
-		<div class="fileUpload" style=" border: 2px solid teal; min-width: 80%; min-height: 80%; background-color: lightyellow; display: inline-block; margin: 0; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%)">
-			<div class="prawnXML" style="display: inline-block; padding-left: 10%">
-				<h4>Zipped Prawn XML File:</h4>
-				<form method="post" action="fileuploadservlet" enctype="multipart/form-data">
-					<input type="file" name="file" />
-					<input type="submit" value="Upload" />
+		<div class="SquidXLS" style="display: inline-block; padding-left: 80px">
+			<h4>Squid.* Task XLS File:</h4>
+			<form method="post" action="fileuploadservlet" enctype="multipart/form-data">
+				<input type="file" name="file" />
+				<input type="submit" value="Upload" />
+			</form>
+		</div>
+
+		<div class="referenceInput" style="padding-left: 10%; padding-top: 5%;">
+			<div>
+				<form>
+					<table>
+						<tr>
+							<td align="right"><h4 style="display: inline-block">Reference Material Sample Name Filter: </h4></td>
+							<td align="left"><input type="text" name="first" /></td>
+						</tr>
+						<tr>
+							<td align="right"><h4 style="display: inline-block">Concentration Reference Material Sample Name Filter: </h4></td>
+							<td align="left"><input type="text" name="first" /></td>
+						</tr>
+
+					</table>
 				</form>
 			</div>
-			<div class="SquidXLS" style="display: inline-block; padding-left: 80px">
-				<h4>Squid.* Task XLS File:</h4>
-				<form method="post" action="fileuploadservlet" enctype="multipart/form-data">
-					<input type="file" name="file" />
-					<input type="submit" value="Upload" />
-				</form>
-			</div>
-
-			<div class="referenceInput" style="padding-left: 10%; padding-top: 5%;">
-				<div>
-					<form>
-						<table>
-							<tr>
-								<td align="right"><h4 style="display: inline-block">Reference Material Sample Name Filter: </h4></td>
-								<td align="left"><input type="text" name="first" /></td>
-							</tr>
-							<tr>
-								<td align="right"><h4 style="display: inline-block">Concentration Reference Material Sample Name Filter: </h4></td>
-								<td align="left"><input type="text" name="first" /></td>
-							</tr>
-
-						</table>
-					</form>
-				</div>
-			</div>
-			<div class="countsAndCalculations" style="padding-top: 5%">
-				<div >
-					<form>
-						<table style="border-collapse: collapse; width: 100%;">
-							<tr style="border-bottom: 2px solid teal; border-top: 2px solid teal">
-								<td align="right"><h4 style="display: inline-block">Normalize Ion Counts for SBM? </h4></td>
-								<td align="left" style="padding-left: 20px">
-									<div style="display: list-item; list-style-type: none;">
-										<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-										<h6 style="display: inline-block">Yes</h6>
-									</div>
-									<div style="display: list-item; list-style-type: none;">
-										<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-										<h6 style="display: inline-block">No</h6>
-									</div>
-								</td>
-							</tr>
-							<tr>
-								<td align="right"><h4 style="display: inline-block">Ratio Calculation Method: </h4></td>
-								<div>
-									<td align="left" style="padding-left: 20px">
-										<div style="display: list-item; list-style-type: none;">
-											<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-											<h6 style="display: inline-block">Linear regression to burn mid-time</h6>
-										</div>
-										<div style="display: list-item; list-style-type: none;">
-											<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-											<h6 style="display: inline-block">Spot average (time-invariant)</h6>
-										</div>
-									</td>
+		</div>
+		<div class="countsAndCalculations" style="padding-top: 5%">
+			<div >
+				<form>
+					<table style="border-collapse: collapse; width: 100%;">
+						<tr style="border-bottom: 2px solid teal; border-top: 2px solid teal">
+							<td align="right"><h4 style="display: inline-block">Normalize Ion Counts for SBM? </h4></td>
+							<td align="left" style="padding-left: 20px">
+								<div style="display: list-item; list-style-type: none;">
+									<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
+									<h6 style="display: inline-block">Yes</h6>
 								</div>
-							</tr>
-							<tr style="border-top: 2px solid teal">
-								<td align="right"><h4 style="display: inline-block">Preferred Index Isotope: </h4></td>
+								<div style="display: list-item; list-style-type: none;">
+									<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
+									<h6 style="display: inline-block">No</h6>
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td align="right"><h4 style="display: inline-block">Ratio Calculation Method: </h4></td>
+							<div>
 								<td align="left" style="padding-left: 20px">
 									<div style="display: list-item; list-style-type: none;">
 										<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-										<h6 style="display: inline-block">204Pb</h6>
+										<h6 style="display: inline-block">Linear regression to burn mid-time</h6>
 									</div>
 									<div style="display: list-item; list-style-type: none;">
 										<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-										<h6 style="display: inline-block">207Pb</h6>
-									</div>
-									<div style="display: list-item; list-style-type: none;">
-										<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
-										<h6 style="display: inline-block">207Pb</h6>
+										<h6 style="display: inline-block">Spot average (time-invariant)</h6>
 									</div>
 								</td>
-							</tr>
+							</div>
+						</tr>
+						<tr style="border-top: 2px solid teal">
+							<td align="right"><h4 style="display: inline-block">Preferred Index Isotope: </h4></td>
+							<td align="left" style="padding-left: 20px">
+								<div style="display: list-item; list-style-type: none;">
+									<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
+									<h6 style="display: inline-block">204Pb</h6>
+								</div>
+								<div style="display: list-item; list-style-type: none;">
+									<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
+									<h6 style="display: inline-block">207Pb</h6>
+								</div>
+								<div style="display: list-item; list-style-type: none;">
+									<button style="display: inline-block" class="w3-button w3-tiny w3-circle w3-teal">+</button>
+									<h6 style="display: inline-block">207Pb</h6>
+								</div>
+							</td>
+						</tr>
 
-						</table>
-					</form>
-				</div>
+					</table>
+				</form>
 			</div>
 		</div>
-
-
-
-		<div id="root"></div>
 	</div>
 
-	
+
+
+	<div id="root"></div>
+</div>
+
+
 </body>
 </html>
 

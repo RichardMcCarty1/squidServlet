@@ -17,10 +17,26 @@
     <servlet-class>com.cirdles.FileUploadServlet</servlet-class>
   </servlet>
   <servlet>
+    <display-name>DeleteServlet</display-name>
+    <servlet-name>DeleteServlet</servlet-name>
+    <servlet-class>com.cirdles.DeleteServlet</servlet-class>
+  </servlet>
+  <servlet>
+  <display-name>DownloadServlet</display-name>
+  <servlet-name>DownloadServlet</servlet-name>
+  <servlet-class>com.cirdles.DownloadServlet</servlet-class>
+  </servlet>
+  <servlet>
     <description></description>
     <display-name>FileRetrieverServlet</display-name>
     <servlet-name>FileRetrieverServlet</servlet-name>
     <servlet-class>com.cirdles.FileRetrieverServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <description></description>
+    <display-name>FileSenderServlet</display-name>
+    <servlet-name>FileSenderServlet</servlet-name>
+    <servlet-class>com.cirdles.FileSenderServlet</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>FileUploadServlet</servlet-name>
@@ -29,5 +45,17 @@
   <servlet-mapping>
     <servlet-name>FileRetrieverServlet</servlet-name>
     <url-pattern>/retrieve</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>FileSenderServlet</servlet-name>
+    <url-pattern>/filesenderservlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DownloadServlet</servlet-name>
+    <url-pattern>/download/*</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>DeleteServlet</servlet-name>
+    <url-pattern>/delete/*</url-pattern>
   </servlet-mapping>
 </web-app>

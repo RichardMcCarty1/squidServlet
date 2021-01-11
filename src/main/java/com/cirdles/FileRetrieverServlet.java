@@ -35,20 +35,17 @@ public class FileRetrieverServlet extends HttpServlet {
 
     public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            //Part fileNamePart = request.getPart("filename");
-            //String fileName = fileNamePart.getSubmittedFileName();
             File f = new File("/usr/local/user_files/");
             f.mkdir();
             for (Part part : request.getParts()) {
                 part.write("/usr/local/user_files/" + "test.zip");
             }
             ZipUtil.unpack(new File("/usr/local/user_files/" + "test.zip"), new File("/usr/local/user_files/"));
+            new File("/usr/local/user_files/" + "test.zip").delete();
         }
         catch (NullPointerException | ServletException | IOException e) {
             response.getWriter().println(e);
             }
-        //String req = request.getReader().lines().collect(Collectors.joining(System.lineSeparator()));
-        //response.getWriter().println(req);
     }
 
 }
